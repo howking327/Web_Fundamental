@@ -13,9 +13,6 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <style>
     
-    .btn:hover{
-      background-color: green !important;
-    }
   </style>
   <title>Hello, world!</title>
 </head>
@@ -35,13 +32,12 @@
           <a class="nav-link" href="#">공지사항 <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">부서관리</a>
+          <a class="nav-link" href="/dept/list.jsp">부서관리</a>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"
-          style="background-color:white;">Search</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
   </nav>
