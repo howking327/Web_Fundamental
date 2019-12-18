@@ -67,7 +67,7 @@
 			</nav>
 			
 			<div class='text-right'>
-				<a href='write.jsp' type="button" class="btn btn-primary btn-sm">부서등록</a>
+				<a href='write.jsp' type="button" class="btn btn-primary btn-sm">부서 신규등록</a>
 			</div>
 		</div>
 	</div>
