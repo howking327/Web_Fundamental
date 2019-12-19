@@ -77,7 +77,7 @@
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">부서관리</li>
+		<li class="breadcrumb-item active" aria-current="page">사원관리</li>
 	</ol>
 </nav>
 <!-- breadcrumb end-->
@@ -86,41 +86,40 @@
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12">
-			<h3>부서 리스트</h3>
+			<h3>사원 리스트</h3>
 			<h6>Total : <%=totalRows %></h6>
 			<div class="table-responsive-lg">
 			<table class="table table-hover">
 				<colgroup>
+					<col width="15%" />
 					<col width="20%" />
-					<col width="50%" />
 					<col width="20%" />
+					<col width="35%" />
 					<col width="10%" />
 				</colgroup>
 				<thead>
 					<tr>
-						<th scope="col">부서코드</th>
-						<th scope="col">부서이름</th>
-						<th scope="col">부서위치</th>
+						<th scope="col">사원코드</th>
+						<th scope="col">이름</th>
+						<th scope="col">직책</th>
+						<th scope="col">입사일자</th>
 						<th scope="col">등록번호</th>
 					</tr>
 				</thead>
 				<tbody>
-				<%
-				if(list.size() != 0){	
-				%>
-				<%for(DeptDto dto : list){ %>
+				
 					<tr>
-						<td><a href='view.jsp?page=<%=cPage%>&no=<%=dto.getNo()%>'><%=dto.getNo() %></a></td>
-						<td><%=dto.getName() %></td>
-						<td><%=dto.getLoc() %></td>
-						<td><%=pageNum-- %></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 					</tr>
-				<%} %>
-				<%}else{ %>
+				
 					<tr>
-						<td colspan="4">데이터가 존재하지 않습니다.</td>
+						<td colspan="5">데이터가 존재하지 않습니다.</td>
 					</tr>
-				<%} %>
+				
 					
 				</tbody>
 			</table>
@@ -154,7 +153,7 @@
 			</nav>
 			
 			<div class='text-right'>
-				<a href='write.jsp?page=<%=cPage%>' type="button" class="btn btn-primary btn-sm">신규 부서등록</a>
+				<a href='write.jsp?page=<%=cPage%>' type="button" class="btn btn-primary btn-sm">신규 사원등록</a>
 			</div>
 		</div>
 	</div>

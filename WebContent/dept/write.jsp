@@ -5,10 +5,24 @@
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">DEPT</li>
+		<li class="breadcrumb-item active" aria-current="page">부서관리</li>
 	</ol>
 </nav>
 <!-- breadcrumb end-->
+
+<%
+int cPage = 0;
+String tempPage = request.getParameter("page");
+if(tempPage == null || tempPage.length()== 0){
+	cPage = 1;
+}
+try{
+	cPage = Integer.parseInt(tempPage);		
+}catch(NumberFormatException e){
+	cPage = 1;
+}
+
+%>
 
 <!-- main start -->
 <div class="container">
@@ -41,7 +55,7 @@
 				</div>
 			</form>
 			<div class='text-right'>
-				<a href='list.jsp' type="button" class="btn btn-secondary btn-sm">목록</a>
+				<a href='list.jsp?page=<%=cPage %>' type="button" class="btn btn-secondary btn-sm">목록</a>
 				<button type="button" id='saveDept' class="btn btn-primary btn-sm">저장</button>
 			</div>
 			

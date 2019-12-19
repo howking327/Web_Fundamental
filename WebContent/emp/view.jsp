@@ -41,7 +41,7 @@
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">부서관리</li>
+		<li class="breadcrumb-item active" aria-current="page">사원관리</li>
 	</ol>
 </nav>
 <!-- breadcrumb end-->
@@ -51,36 +51,63 @@
 	<div class="row">
 		<div class="col-lg-12">
 			<h3>
-			부서정보 상세보기
+			사원정보 상세보기
 			</h3>
-			<form name="f" method="post">
+			<form name="f" method="post" action="save.jsp">
 				<div class="form-group row">
-					<label for="no" class="col-sm-2 col-form-label">부서코드</label>
+					<label for="no" class="col-sm-2 col-form-label">사원코드</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control"
-							id="no" name="no" readonly="readonly" value="<%=no %>">
+							id="no" name="no">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="name" class="col-sm-2 col-form-label">부서이름</label>
+					<label for="name" class="col-sm-2 col-form-label">이름</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
-							id="name" name="name" value="<%=name %>">
+							id="name" name="name">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="loc" class="col-sm-2 col-form-label">부서위치</label>
+					<label for="job" class="col-sm-2 col-form-label">직책</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
-							id="loc" name="loc" value="<%=loc %>">
+							id="job" name="job">
 					</div>
 				</div>
-				<input type="hidden" name="page" value="<%=cPage%>"/>
+				<div class="form-group row">
+					<label for="mgr" class="col-sm-2 col-form-label">담당 사수</label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control"
+							id="mgr" name="mgr">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="sal" class="col-sm-2 col-form-label">월급여</label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control"
+							id="sal" name="sal">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="comm" class="col-sm-2 col-form-label">상여금</label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control"
+							id="comm" name="comm">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="deptNo" class="col-sm-2 col-form-label">부서코드</label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control"
+							id="deptNo" name="deptNo">
+					</div>
+				</div>
 			</form>
 			<div class='text-right'>
 				<a href='list.jsp?page=<%=cPage %>' type="button" class="btn btn-secondary btn-sm">목록</a>
-				<button type="button" id="updateDept" class="btn btn-primary btn-sm">수정</button>
-				<button type="button" id="deleteDept" class="btn btn-danger btn-sm">삭제</button>
+				<button type="button" id="updateEmp" class="btn btn-primary btn-sm">수정</button>
+				<button type="button" id="deleteEmp" class="btn btn-danger btn-sm">삭제</button>
 			</div>
 			
 
@@ -94,28 +121,38 @@
 <script>
 $(function(){
 	$("#no").focus();
-	$("#updateDept").click(function(){
+	$("#updateEmp").click(function(){
 		//자바스크립트 유효성 검사
 		if($("#no").val().length==0){
-			alert("부서번호를 입력하세요.");
+			alert("사원코드를 입력하세요.");
 			$("#no").focus();
 			return;
 		}
 		if($("#name").val().length==0){
-			alert("부서이름을 입력하세요.");
+			alert("이름을 입력하세요.");
 			$("#name").focus();
 			return;
 		}
-		if($("#loc").val().length==0){
-			alert("부서위치를 입력하세요.");
-			$("#loc").focus();
+		if($("#job").val().length==0){
+			alert("직책을 입력하세요.");
+			$("#job").focus();
+			return;
+		}
+		if($("#sal").val().length==0){
+			alert("월급여를 입력하세요.");
+			$("#sal").focus();
+			return;
+		}
+		if($("#deptNo").val().length==0){
+			alert("부서코드를 입력하세요.");
+			$("#deptNo").focus();
 			return;
 		}
 		f.action="update.jsp";
 		f.submit();
 	});
 	
-	$("#deleteDept").click(function(){
+	$("#deleteEmp").click(function(){
 		f.action="delete.jsp";
 		f.submit();
 	});
