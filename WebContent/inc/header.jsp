@@ -39,6 +39,9 @@
         <li class="nav-item <%if(uri.startsWith("/emp")){%>active<%}%>">
           <a class="nav-link" href="/emp/list.jsp">사원관리</a>
         </li>
+        <li class="nav-item <%if(uri.startsWith("/crawling")){%>active<%}%>">
+          <a class="nav-link" href="/crawling/list.jsp">가상화폐</a>
+        </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search">
