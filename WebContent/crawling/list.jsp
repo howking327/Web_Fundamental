@@ -2,8 +2,8 @@
 <%@page import="java.io.IOException"%>
 <%@page import="org.jsoup.Jsoup"%>
 <%@page import="org.jsoup.nodes.Document"%>
-<%@ page pageEncoding="utf-8"%>
-<%@ include file="../inc/header.jsp"%>
+<%@page pageEncoding="utf-8"%>
+<%@include file="../inc/header.jsp"%>
 
 <%
 String url = "https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20171101&end=20191203";
@@ -147,4 +147,4 @@ Elements elements = doc.select(".cmc-table__table-wrapper-outer table tbody tr")
 		</div>
 	</div>
 </div>
-<%@ include file="../inc/footer.jsp"%>
+<%@include file="../inc/footer.jsp"%>
