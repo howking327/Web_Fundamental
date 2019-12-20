@@ -20,7 +20,7 @@
 <body>
   <!-- navbar start -->
   <nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #563d7c;">
-    <a class="navbar-brand" href="/index.jsp">Home</a>
+    <a class="navbar-brand" href="/index.jsp">(주)에이콘</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
       aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

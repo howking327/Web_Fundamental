@@ -4,7 +4,7 @@
 <!-- breadcrumb start -->
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
+		<li class="breadcrumb-item"><a href="/index.jsp">Main</a></li>
 		<li class="breadcrumb-item active" aria-current="page">사원관리</li>
 	</ol>
 </nav>
@@ -32,6 +32,7 @@ try{
 			사원등록
 			</h3>
 			<form name="f" method="post" action="save.jsp">
+				<%-- 
 				<div class="form-group row">
 					<label for="no" class="col-sm-2 col-form-label">사원코드</label>
 					<div class="col-sm-10">
@@ -39,6 +40,7 @@ try{
 							id="no" name="no">
 					</div>
 				</div>
+				 --%>
 				<div class="form-group row">
 					<label for="name" class="col-sm-2 col-form-label">이름</label>
 					<div class="col-sm-10">
@@ -100,11 +102,11 @@ $(function(){
 	$("#no").focus();
 	$("#saveEmp").click(function(){
 		//자바스크립트 유효성 검사
-		if($("#no").val().length==0){
+		<%--if($("#no").val().length==0){
 			alert("사원코드를 입력하세요.");
 			$("#no").focus();
 			return;
-		}
+		}--%>
 		if($("#name").val().length==0){
 			alert("이름을 입력하세요.");
 			$("#name").focus();

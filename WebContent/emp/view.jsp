@@ -1,5 +1,5 @@
-<%@page import="kr.co.acorn.dto.DeptDto"%>
-<%@page import="kr.co.acorn.dao.DeptDao"%>
+<%@page import="kr.co.acorn.dto.EmpDto"%>
+<%@page import="kr.co.acorn.dao.EmpDao"%>
 <%@ page pageEncoding="utf-8"%>
 <%@ include file="../inc/header.jsp"%>
 
@@ -27,20 +27,26 @@
 		return;
 	}
 	
-	DeptDao dao = DeptDao.getInstance();
-	DeptDto dto = dao.select(no);
+	EmpDao dao = EmpDao.getInstance();
+	EmpDto dto = dao.select(no);
 	if(dto == null){
 		response.sendRedirect("list.jsp?page="+cPage);
 		return;
 	}
 	String name = dto.getName();
-	String loc = dto.getLoc();
+	String job = dto.getJob();
+	int mgr = dto.getMgr();
+	String hiredate = dto.getHiredate();
+	int sal = dto.getSal();
+	int comm = dto.getComm();
+	int deptNo = dto.getDeptDto().getNo();
+	
 	
 %>
 <!-- breadcrumb start -->
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
+		<li class="breadcrumb-item"><a href="/index.jsp">Main</a></li>
 		<li class="breadcrumb-item active" aria-current="page">사원관리</li>
 	</ol>
 </nav>
@@ -53,59 +59,66 @@
 			<h3>
 			사원정보 상세보기
 			</h3>
-			<form name="f" method="post" action="save.jsp">
+			<form name="f" method="post">
 				<div class="form-group row">
 					<label for="no" class="col-sm-2 col-form-label">사원코드</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control"
-							id="no" name="no">
+							id="no" name="no" readonly="readonly" value="<%=no %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="name" class="col-sm-2 col-form-label">이름</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
-							id="name" name="name">
+							id="name" name="name" value="<%=name %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="job" class="col-sm-2 col-form-label">직책</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
-							id="job" name="job">
+							id="job" name="job" value="<%=job %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="mgr" class="col-sm-2 col-form-label">담당 사수</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control"
-							id="mgr" name="mgr">
+							id="mgr" name="mgr" value="<%=mgr %>">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="hiredate" class="col-sm-2 col-form-label">입사일자</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="hiredate" name="hiredate" readonly="readonly" value="<%=hiredate %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="sal" class="col-sm-2 col-form-label">월급여</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control"
-							id="sal" name="sal">
+							id="sal" name="sal" value="<%=sal %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="comm" class="col-sm-2 col-form-label">상여금</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control"
-							id="comm" name="comm">
+							id="comm" name="comm" value="<%=comm %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="deptNo" class="col-sm-2 col-form-label">부서코드</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control"
-							id="deptNo" name="deptNo">
+							id="deptNo" name="deptNo" value="<%=deptNo %>">
 					</div>
 				</div>
 			</form>
 			<div class='text-right'>
-				<a href='list.jsp?page=<%=cPage %>' type="button" class="btn btn-secondary btn-sm">목록</a>
+				<button type="button" id="prevPage" class="btn btn-secondary btn-sm">이전</button>
 				<button type="button" id="updateEmp" class="btn btn-primary btn-sm">수정</button>
 				<button type="button" id="deleteEmp" class="btn btn-danger btn-sm">삭제</button>
 			</div>
@@ -120,7 +133,10 @@
 
 <script>
 $(function(){
-	$("#no").focus();
+	$("#name").focus();
+	$("#prevPage").click(function(){
+		history.back(-1);
+	});
 	$("#updateEmp").click(function(){
 		//자바스크립트 유효성 검사
 		if($("#no").val().length==0){

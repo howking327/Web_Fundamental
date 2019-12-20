@@ -1,6 +1,6 @@
-<%@ page import="kr.co.acorn.dto.DeptDto"%>
+<%@page import="kr.co.acorn.dto.EmpDto"%>
+<%@page import="kr.co.acorn.dao.EmpDao"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="kr.co.acorn.dao.DeptDao"%>
 <%@ page pageEncoding="utf-8"%>
 <%@ include file="../inc/header.jsp"%>
 
@@ -27,7 +27,7 @@
 	
 	
 	//An = a1 + (n-1)*d
-	DeptDao dao = DeptDao.getInstance();
+	EmpDao dao = EmpDao.getInstance();
 	
 	totalRows = dao.getTotalRows();
 	
@@ -43,7 +43,7 @@
 	start = (cPage - 1) * len;
 	pageNum = totalRows + (cPage - 1)*(-len);
 	
-	ArrayList<DeptDto> list = dao.select(start,len);
+	ArrayList<EmpDto> list = dao.select(start,len);
 	
 	/*
 	totalRows = 132;
@@ -76,7 +76,7 @@
 <!-- breadcrumb start -->
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
+		<li class="breadcrumb-item"><a href="/index.jsp">Main</a></li>
 		<li class="breadcrumb-item active" aria-current="page">사원관리</li>
 	</ol>
 </nav>
@@ -93,8 +93,9 @@
 				<colgroup>
 					<col width="15%" />
 					<col width="20%" />
-					<col width="20%" />
-					<col width="35%" />
+					<col width="15%" />
+					<col width="15%" />
+					<col width="25%" />
 					<col width="10%" />
 				</colgroup>
 				<thead>
@@ -102,24 +103,28 @@
 						<th scope="col">사원코드</th>
 						<th scope="col">이름</th>
 						<th scope="col">직책</th>
+						<th scope="col">부서</th>
 						<th scope="col">입사일자</th>
 						<th scope="col">등록번호</th>
 					</tr>
 				</thead>
 				<tbody>
-				
+					<%if(list.size() != 0){ %>
+					<%for(EmpDto dto : list){ %>
 					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td><a href='view.jsp?page=<%=cPage%>&no=<%=dto.getNo()%>'><%=dto.getNo() %></a></td>
+						<td><%=dto.getName() %></td>
+						<td><%=dto.getJob() %></td>
+						<td><a href='../dept/view.jsp?page=<%=cPage%>&no=<%=dto.getDeptDto().getNo() %>'><%=dto.getDeptDto().getName() %></a></td>
+						<td><%=dto.getHiredate() %></td>
+						<td><%=pageNum-- %></td>
 					</tr>
-				
+					<%} %>
+					<%}else{ %>
 					<tr>
-						<td colspan="5">데이터가 존재하지 않습니다.</td>
+						<td colspan="6">데이터가 존재하지 않습니다.</td>
 					</tr>
-				
+					<%} %>
 					
 				</tbody>
 			</table>

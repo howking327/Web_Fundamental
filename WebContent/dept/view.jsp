@@ -40,7 +40,7 @@
 <!-- breadcrumb start -->
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
+		<li class="breadcrumb-item"><a href="/index.jsp">Main</a></li>
 		<li class="breadcrumb-item active" aria-current="page">부서관리</li>
 	</ol>
 </nav>
@@ -78,7 +78,7 @@
 				<input type="hidden" name="page" value="<%=cPage%>"/>
 			</form>
 			<div class='text-right'>
-				<a href='list.jsp?page=<%=cPage %>' type="button" class="btn btn-secondary btn-sm">목록</a>
+				<button type="button" id="prevPage" class="btn btn-secondary btn-sm">이전</button>
 				<button type="button" id="updateDept" class="btn btn-primary btn-sm">수정</button>
 				<button type="button" id="deleteDept" class="btn btn-danger btn-sm">삭제</button>
 			</div>
@@ -93,7 +93,10 @@
 
 <script>
 $(function(){
-	$("#no").focus();
+	$("#name").focus();
+	$("#prevPage").click(function(){
+		history.back(-1);
+	});
 	$("#updateDept").click(function(){
 		//자바스크립트 유효성 검사
 		if($("#no").val().length==0){

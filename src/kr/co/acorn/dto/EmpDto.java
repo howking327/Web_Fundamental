@@ -10,6 +10,24 @@ public class EmpDto {
 	private int comm;
 	private DeptDto deptDto;
 	
+	
+	
+	public EmpDto(int no, String name, String job, String hiredate, DeptDto deptDto) {
+		this(no,name,job,0,hiredate,0,0,deptDto);
+	}
+
+	public EmpDto(int no, String name, String job, int mgr, String hiredate, int sal, int comm, DeptDto deptDto) {
+		super();
+		this.no = no;
+		this.name = name;
+		this.job = job;
+		this.mgr = mgr;
+		this.hiredate = hiredate;
+		this.sal = sal;
+		this.comm = comm;
+		this.deptDto = deptDto;
+	}
+	
 	public int getNo() {
 		return no;
 	}
