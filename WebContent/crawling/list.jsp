@@ -1,3 +1,9 @@
+<%@page import="java.util.Calendar"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="kr.co.acorn.dto.CrawlingDto"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="kr.co.acorn.dao.CrawlingDao"%>
+<%@page import="org.jsoup.nodes.Element"%>
 <%@page import="org.jsoup.select.Elements"%>
 <%@page import="java.io.IOException"%>
 <%@page import="org.jsoup.Jsoup"%>
@@ -6,17 +12,53 @@
 <%@include file="../inc/header.jsp"%>
 
 <%
-String url = "https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20171101&end=20191203";
-Document doc = null;
+SimpleDateFormat sdf = new SimpleDateFormat ("yyyy");
+Calendar time = Calendar.getInstance();
+int year = Integer.parseInt(sdf.format(time.getTime()));
 
-try {
-	doc = Jsoup.connect(url).get();
-} catch (IOException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
+int y1 = 0;
+int m1 = 0; 
+int d1 = 0;
+int y2 = 0;
+int m2 = 0;
+int d2 = 0;
+
+int dsy = year-1;
+int dey = year;
+int dm = 1;
+int dd = 1;
+
+if(request.getParameter("sy") != null){
+	y1 = Integer.parseInt(request.getParameter("sy"));
 }
-Elements elements = doc.select(".cmc-table__table-wrapper-outer table tbody tr");
-	
+if(request.getParameter("sm") != null){
+	m1 = Integer.parseInt(request.getParameter("sm"));
+}
+if(request.getParameter("sd") != null){
+	d1 = Integer.parseInt(request.getParameter("sd"));
+}
+if(request.getParameter("ey") != null){
+	y2 = Integer.parseInt(request.getParameter("ey"));
+}
+if(request.getParameter("em") != null){
+	m2 = Integer.parseInt(request.getParameter("em"));
+}
+if(request.getParameter("ed") != null){
+	d2 = Integer.parseInt(request.getParameter("ed"));
+}
+
+int startdate = y1*10000+m1*100+d1; 
+int enddate = y2*10000+m2*100+d2; 
+if(startdate ==0 && enddate ==0){
+	startdate = dsy*10000+dm*100+dd;
+	enddate = year*10000+dm*100+dd;
+}
+
+CrawlingDao dao = CrawlingDao.getInstance();
+ArrayList<CrawlingDto> list = dao.crawl(startdate, enddate); 
+
+
+
 %>
 <!-- breadcrumb start -->
 <nav aria-label="breadcrumb">
@@ -40,11 +82,11 @@ Elements elements = doc.select(".cmc-table__table-wrapper-outer table tbody tr")
 					<div class="form-group col-sm-9">
 						<select id="coin" name="coin" class="form-control">
 							<option selected>Coin...</option>
-							<option value="bitcoin" selected>비트코인</option>
-							<option value="ethereum">이더리움</option>
-							<option value="xrp">리플</option>
-							<option value="bitcoin-cash">비트코인캐쉬</option>
-							<option value="litecoin">라이트코인</option>
+							<option value="bitcoin"  selected>비트코인</option>
+							<option value="ethereum" >이더리움</option>
+							<option value="xrp" >리플</option>
+							<option value="tether" >테더</option>
+							<option value="bitcoin-cash" >비트코인캐쉬</option>
 						</select>
 					</div>
 				</div>
@@ -54,22 +96,28 @@ Elements elements = doc.select(".cmc-table__table-wrapper-outer table tbody tr")
 
 					<div class="form-group col-sm-3">
 						<select id="startYear" name="startYear" class="form-control">
-							<option selected>Year...</option>
-							<option value="2010">2010</option>
+							<option selected>year..</option>
+							<%for(int sy=year-4;sy<=year;sy++){ %>
+							<option value="<%=sy %>" selected><%=sy %></option>
+							<%} %>
 						</select>
 
 					</div>
 					<div class="form-group col-sm-3">
 						<select id="startMonth" name="startMonth" class="form-control">
-							<option selected>Month...</option>
-							<option value="1">1</option>
+							<option selected>month..</option>
+							<%for(int sm=1 ; sm<=12 ; sm++){ %>
+							<option value="<%=sm %>" selected><%=sm %></option>
+							<%} %>
 						</select>
 					</div>
 
 					<div class="form-group col-sm-3">
 						<select id="startDay" name="startDay" class="form-control">
-							<option selected>Day...</option>
-							<option value="1">1</option>
+							<option selected>day..</option>
+							<%for(int sd=1;sd<=31;sd++){ %>
+							<option value="<%=sd %>" selected><%=sd %></option>
+							<%} %>
 						</select>
 					</div>
 
@@ -80,22 +128,28 @@ Elements elements = doc.select(".cmc-table__table-wrapper-outer table tbody tr")
 
 					<div class="form-group col-sm-3">
 						<select id="endYear" name="endYear" class="form-control">
-							<option selected>Year...</option>
-							<option value="2010">2010</option>
+							<option selected>year..</option>
+							<%for(int ey=year-4;ey<=year;ey++){ %>
+							<option value="<%=ey %>" selected><%=ey %></option>
+							<%} %>
 						</select>
 					</div>
 
 					<div class="form-group col-sm-3">
 						<select id="endMonth" name="endMonth" class="form-control">
 							<option selected>Month...</option>
-							<option value="1">1</option>
+							<%for(int em=1;em<=12;em++){ %>
+							<option value="<%=em %>" selected><%=em %></option>
+							<%} %>
 						</select>
 					</div>
 
 					<div class="form-group col-sm-3">
 						<select id="endDay" name="endDay" class="form-control">
 							<option selected>Day...</option>
-							<option value="1">1</option>
+							<%for(int ed=1;ed<=31;ed++){ %>
+							<option value="<%=ed %>" selected><%=ed %></option>
+							<%} %>
 						</select>
 					</div>
 
@@ -110,11 +164,11 @@ Elements elements = doc.select(".cmc-table__table-wrapper-outer table tbody tr")
 			<div class="table-responsive-lg">
 				<table class="table table-hover">
 					<colgroup>
-						<col width="10%" />
-						<col width="15%" />
-						<col width="15%" />
-						<col width="15%" />
-						<col width="15%" />
+						<col width="14%" />
+						<col width="14%" />
+						<col width="14%" />
+						<col width="14%" />
+						<col width="14%" />
 						<col width="15%" />
 						<col width="15%" />
 					</colgroup>
@@ -130,16 +184,23 @@ Elements elements = doc.select(".cmc-table__table-wrapper-outer table tbody tr")
 						</tr>
 					</thead>
 					<tbody>
-
+					<%if(list.size() != 0){ %>
+					<%for(CrawlingDto dto : list){ %>
 						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td><%=dto.getDate() %></td>
+							<td><%=dto.getOpen() %></td>
+							<td><%=dto.getHigh() %></td>
+							<td><%=dto.getLow() %></td>
+							<td><%=dto.getClose() %></td>
+							<td><%=dto.getVolume() %></td>
+							<td><%=dto.getMarketcap() %></td>
 						</tr>
+					<%} %>
+					<%}else{ %>
+					<tr>
+						<td colspan="7">데이터가 존재하지 않습니다.</td>
+					</tr>
+					<%} %>
 					</tbody>
 				</table>
 			</div>
