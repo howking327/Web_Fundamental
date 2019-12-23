@@ -32,15 +32,6 @@ try{
 			회원등록
 			</h3>
 			<form name="f" method="post" action="save.jsp">
-				<%-- 
-				<div class="form-group row">
-					<label for="no" class="col-sm-2 col-form-label">사원코드</label>
-					<div class="col-sm-10">
-						<input type="number" class="form-control"
-							id="no" name="no">
-					</div>
-				</div>
-				 --%>
 				<div class="form-group row">
 					<label for="name" class="col-sm-2 col-form-label">이름</label>
 					<div class="col-sm-10">

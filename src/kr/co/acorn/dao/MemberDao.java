@@ -72,7 +72,7 @@ public class MemberDao {
 		try {
 			con = ConnLocator.getConnection();
 			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT COUNT(ename) ");
+			sql.append("SELECT COUNT(m_name) ");
 			sql.append("FROM member ");
 			pstmt = con.prepareStatement(sql.toString());
 			
@@ -128,7 +128,7 @@ public class MemberDao {
 				String name = rs.getString(++index);
 				String regdate = rs.getString(++index);
 				
-				list.add(new MemberDto());
+				list.add(new MemberDto(email,name,null,null,regdate));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -145,5 +145,50 @@ public class MemberDao {
 		}
 		
 		return list;
+	}
+	
+	public MemberDto select(String name) {
+		MemberDto dto = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT m_email, m_name, m_pwd, m_phone, m_regdate ");
+			sql.append("FROM member ");
+			sql.append("WHERE m_email = ? ");
+			pstmt = con.prepareStatement(sql.toString());
+			
+			int index = 0;
+			pstmt.setString(++index, name);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				index=0;
+				String email = rs.getString(++index);
+				name = rs.getString(++index);
+				String password = rs.getString(++index);
+				String phone = rs.getString(++index);
+				String regdate = rs.getString(++index);
+				dto = new MemberDto(email,name,password,phone,regdate);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(con!=null) con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return dto;
 	}
 }

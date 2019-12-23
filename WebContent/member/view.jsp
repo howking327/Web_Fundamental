@@ -1,5 +1,44 @@
+<%@page import="kr.co.acorn.dto.MemberDto"%>
+<%@page import="kr.co.acorn.dao.MemberDao"%>
 <%@ page pageEncoding="utf-8"%>
 <%@ include file="../inc/header.jsp"%>
+
+<%
+	String tempPage = request.getParameter("page");
+	String tempName = request.getParameter("name");
+	if(tempPage == null || tempPage.length()==0){
+		tempPage = "1";
+	}
+	if(tempName == null || tempName.length()==0){
+		response.sendRedirect("list.jsp?page="+tempPage);
+		return;
+	}
+	int cPage = 0;
+	int name = 0;
+	try{
+		cPage = Integer.parseInt(tempPage);
+	}catch(NumberFormatException e){
+		cPage = 1;
+	}
+	try{
+		name = Integer.parseInt(tempName);
+	}catch(NumberFormatException e){
+		response.sendRedirect("list.jsp?page="+cPage);
+		return;
+	}
+	
+	MemberDao dao = MemberDao.getInstance();
+	MemberDto dto = dao.select(name);
+	if(dto == null){
+		response.sendRedirect("list.jsp?page="+cPage);
+		return;
+	}
+	String email = dto.getEmail();
+	String password = dto.getPassword();
+	String phone = dto.getPhone();
+	String regdate = dto.getRegdate();
+	
+%>
 
 <!-- breadcrumb start -->
 <nav aria-label="breadcrumb">
@@ -11,7 +50,6 @@
 <!-- breadcrumb end-->
 
 
-
 <!-- main start -->
 <div class="container">
 	<div class="row">
@@ -20,20 +58,11 @@
 			회원 상세보기
 			</h3>
 			<form name="f" method="post" action="save.jsp">
-				<%-- 
-				<div class="form-group row">
-					<label for="no" class="col-sm-2 col-form-label">사원코드</label>
-					<div class="col-sm-10">
-						<input type="number" class="form-control"
-							id="no" name="no">
-					</div>
-				</div>
-				 --%>
 				<div class="form-group row">
 					<label for="name" class="col-sm-2 col-form-label">이름</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
-							id="name" name="name">
+							id="name" name="name" value="<%=name%>">
 						<div id="nameMessage"></div>
 					</div>
 				</div>
@@ -41,7 +70,7 @@
 					<label for="email" class="col-sm-2 col-form-label">이메일</label>
 					<div class="col-sm-10">
 						<input type="email" class="form-control"
-							id="email" name="email">
+							id="email" name="email" value="<%=email%>">
 						<div id="emailMessage"></div>
 					</div>
 				</div>
@@ -49,7 +78,7 @@
 					<label for="password" class="col-sm-2 col-form-label">비밀번호</label>
 					<div class="col-sm-10">
 						<input type="password" class="form-control"
-							id="password" name="password">
+							id="password" name="password" value="<%=password%>">
 						<div id="passwordMessage"></div>
 					</div>
 				</div>
@@ -57,7 +86,7 @@
 					<label for="repassword" class="col-sm-2 col-form-label">비밀번호 확인</label>
 					<div class="col-sm-10">
 						<input type="password" class="form-control"
-							id="repassword" name="repassword">
+							id="repassword" name="repassword" value="<%=password%>">
 						<div id="repasswordMessage"></div>
 					</div>
 				</div>
@@ -65,15 +94,23 @@
 					<label for="phone" class="col-sm-2 col-form-label">휴대폰 번호</label>
 					<div class="col-sm-10">
 						<input type="tell" class="form-control"
-							id="phone" name="phone">
+							id="phone" name="phone" value="<%=phone%>">
 						<div id="phoneMessage"></div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="regdate" class="col-sm-2 col-form-label">가입 일자</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="regdate" name="regdate" readonly="readonly" value="<%=regdate%>">
 					</div>
 				</div>
 				<input type='hidden' name='checkEmail' id='checkEmail' value='no'/>
 			</form>
 			<div class='text-right'>
-				<a href='list.jsp?page=<%=cPage %>' type="button" class="btn btn-secondary btn-sm">목록</a>
-				<button type="button" id='saveMember' class="btn btn-primary btn-sm">저장</button>
+				<button type="button" id="prevPage" class="btn btn-secondary btn-sm">이전</button>
+				<button type="button" id="updateMember" class="btn btn-primary btn-sm">수정</button>
+				<button type="button" id="deleteMember" class="btn btn-danger btn-sm">삭제</button>
 			</div>
 			
 
@@ -87,13 +124,11 @@
 <script>
 $(function(){
 	$("#name").focus();
-	$("#saveMember").click(function(){
+	$("#prevPage").click(function(){
+		history.back(-1);
+	});
+	$("#updateMember").click(function(){
 		//자바스크립트 유효성 검사
-		<%--if($("#no").val().length==0){
-			alert("사원코드를 입력하세요.");
-			$("#no").focus();
-			return;
-		}--%>
 		if($("#name").val().length==0){
 			$('#name').addClass("is-invalid");
 			$('#nameMessage').html("<span class='text-danger'>이름을 입력하세요</span>");
@@ -182,6 +217,12 @@ $(function(){
 	$("#phone").keyup(function(){
 		$("#phone").removeClass("is-invalid");
 		$("#phoneMessage").html('');
+	});
+	
+	
+	$("#deleteMember").click(function(){
+		f.action="delete.jsp";
+		f.submit();
 	});
 });
 </script>

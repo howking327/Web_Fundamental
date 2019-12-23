@@ -46,22 +46,7 @@
 	
 	ArrayList<MemberDto> list = dao.select(start,len);
 	
-	/*
-	totalRows = 132;
-	len = 5;
-	pageLength = 5;
-				startPage	endPage
-	cPage = 1		1			5
-	cPage = 5		1			5
-	cPage = 7		6			10
-	cPage = 14		11			15
-	cPage = 25		21			25
-	cPage = 27		26			27
-	startPage = 1 + (n-1) * pageLength
-	startPage = 1 + (currentBlock-1) * pageLength
-	n은 1씩 증가 n => currentBlock
-	endPage = pageLength + (currentBlock-1) * pageLength
-	*/
+	
 	int currentBlock = cPage % pageLength == 0 ? (cPage/pageLength) : (cPage/pageLength+1);
 	int totalBlock = totalPage % pageLength == 0 ? (totalPage/pageLength) : (totalPage/pageLength+1);
 	
@@ -109,8 +94,8 @@
 					<%if(list.size() != 0){ %>
 					<%for(MemberDto dto : list){ %>
 					<tr>
-						<td><%=dto.getName() %></td>
-						<td><a href='view.jsp?page=<%=cPage%>&name=<%=dto.getEmail()%>'><%=dto.getEmail() %></a></td>
+						<td><a href='view.jsp?page=<%=cPage%>&name=<%=dto.getName()%>'><%=dto.getName() %></a></td>
+						<td><%=dto.getEmail() %></td>
 						<td><%=dto.getRegdate() %></td>
 						<td><%=pageNum-- %></td>
 					</tr>
