@@ -62,6 +62,96 @@ public class MemberDao {
 		return isSuccess;
 	}
 	
+	public boolean isCorrect(String email, String password) {
+		boolean isSuccess = false;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT COUNT(m_email) ");
+			sql.append("FROM member ");
+			sql.append("WHERE m_email = ? AND m_pwd = PASSWORD(?) ");
+			pstmt = con.prepareStatement(sql.toString());
+			
+			int index = 0;
+			pstmt.setString(++index, email);
+			pstmt.setString(++index, password);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				index=0;
+				int count = rs.getInt(++index);
+				if(count!=0) {
+					isSuccess = true;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(con!=null) con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return isSuccess;
+	}
+	
+	public MemberDto getMember(MemberDto dto) {
+		MemberDto memberDto = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT m_email, m_name, m_phone, date_format(m_regdate,'%Y/%m/%d') ");
+			sql.append("FROM member ");
+			sql.append("WHERE m_email = ? AND m_pwd = PASSWORD(?) ");
+			pstmt = con.prepareStatement(sql.toString());
+			
+			int index = 0;
+			pstmt.setString(++index, dto.getEmail());
+			pstmt.setString(++index, dto.getPassword());
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				index=0;
+				String email = rs.getString(++index);
+				String name = rs.getString(++index);
+				String phone = rs.getString(++index);
+				String regdate = rs.getString(++index);
+				memberDto = new MemberDto(email,name,null,phone,regdate);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(con!=null) con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return memberDto;
+	}
+	
+	
 	public int getTotalRows() {
 		int count = 0;
 		
@@ -147,7 +237,7 @@ public class MemberDao {
 		return list;
 	}
 	
-	public MemberDto select(String name) {
+	public MemberDto select(String email) {
 		MemberDto dto = null;
 		
 		Connection con = null;
@@ -163,13 +253,13 @@ public class MemberDao {
 			pstmt = con.prepareStatement(sql.toString());
 			
 			int index = 0;
-			pstmt.setString(++index, name);
+			pstmt.setString(++index, email);
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				index=0;
-				String email = rs.getString(++index);
-				name = rs.getString(++index);
+				email = rs.getString(++index);
+				String name = rs.getString(++index);
 				String password = rs.getString(++index);
 				String phone = rs.getString(++index);
 				String regdate = rs.getString(++index);
@@ -190,5 +280,44 @@ public class MemberDao {
 		}
 		
 		return dto;
+	}
+	
+	public boolean update(MemberDto dto) {
+		boolean isSuccess = false;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("UPDATE member ");
+			sql.append("SET  m_name=?, m_pwd=PASSWORD(?), m_phone=? ");
+			sql.append("WHERE m_email=? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			int index = 0;
+			
+			pstmt.setString(++index, dto.getName());
+			pstmt.setString(++index, dto.getPassword());
+			pstmt.setString(++index, dto.getPhone());
+			pstmt.setString(++index, dto.getEmail());
+			pstmt.executeUpdate();
+			
+			isSuccess = true;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(con!=null) con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return isSuccess;
 	}
 }

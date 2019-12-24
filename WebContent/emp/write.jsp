@@ -86,7 +86,9 @@ try{
 			</form>
 			<div class='text-right'>
 				<a href='list.jsp?page=<%=cPage %>' type="button" class="btn btn-secondary btn-sm">목록</a>
+				<%if(memberDto != null){ %>
 				<button type="button" id='saveEmp' class="btn btn-primary btn-sm">저장</button>
+				<%} %>
 			</div>
 			
 

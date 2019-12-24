@@ -94,8 +94,8 @@
 					<%if(list.size() != 0){ %>
 					<%for(MemberDto dto : list){ %>
 					<tr>
-						<td><a href='view.jsp?page=<%=cPage%>&name=<%=dto.getName()%>'><%=dto.getName() %></a></td>
-						<td><%=dto.getEmail() %></td>
+						<td><%=dto.getName() %></td>
+						<td><a href='view.jsp?page=<%=cPage%>&email=<%=dto.getEmail()%>'><%=dto.getEmail() %></a></td>
 						<td><%=dto.getRegdate() %></td>
 						<td><%=pageNum-- %></td>
 					</tr>
@@ -137,9 +137,7 @@
 				</ul>
 			</nav>
 			
-			<div class='text-right'>
-				<a href='write.jsp?page=<%=cPage%>' type="button" class="btn btn-primary btn-sm">신규 회원가입</a>
-			</div>
+			
 		</div>
 	</div>
 </div>

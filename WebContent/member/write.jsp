@@ -122,7 +122,7 @@ $(function(){
 			$("#repassword").focus();
 			return;
 		}
-		if($("#repassword").val() != $("password").val()){
+		if($("password").val() != $("#repassword").val()){
 			$('#repassword').addClass("is-invalid");
 			$('#repasswordMessage').html("<span class='text-danger'>비밀번호가 일치하지 않습니다.</span>");
 			$("#repassword").val("");
