@@ -14,6 +14,7 @@
 	int endPage = 0;
 	int pageLength = 5;
 	int pageNum = 0;
+	String name = null;
 	String tempPage = request.getParameter("page");
 	if(tempPage == null || tempPage.length()== 0){
 		cPage = 1;
@@ -28,6 +29,8 @@
 	
 	//An = a1 + (n-1)*d
 	DeptDao dao = DeptDao.getInstance();
+	
+	
 	
 	totalRows = dao.getTotalRows();
 	
@@ -152,6 +155,8 @@
 					<%} %>
 				</ul>
 			</nav>
+			
+			
 			
 			<div class='text-right'>
 				<a href='write.jsp?page=<%=cPage%>' type="button" class="btn btn-primary btn-sm">신규 부서등록</a>

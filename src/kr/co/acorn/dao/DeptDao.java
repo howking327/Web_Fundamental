@@ -64,6 +64,7 @@ public class DeptDao {
 		return list;
 	}
 	
+	
 	public int getTotalRows() {
 		int rows = 0;
 		
