@@ -33,6 +33,9 @@ public class DeptDao {
 			sql.append("FROM dept ");
 			sql.append("ORDER BY deptno ");
 			sql.append("LIMIT ?,? ");
+			
+
+			
 			pstmt = con.prepareStatement(sql.toString());
 			
 			int index = 0;
@@ -64,6 +67,54 @@ public class DeptDao {
 		return list;
 	}
 	
+	public ArrayList<DeptDto> select(int start, int len, String keyWord){
+		ArrayList<DeptDto> list = new ArrayList<DeptDto>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT deptno, dname, loc ");
+			sql.append("FROM dept ");
+			sql.append("WHERE dname LIKE ? ");
+			sql.append("ORDER BY deptno ");
+			sql.append("LIMIT ?,? ");
+			
+			
+			pstmt = con.prepareStatement(sql.toString());
+			
+			int index = 0;
+			pstmt.setString(++index, "%"+keyWord+"%");
+			pstmt.setInt(++index, start);
+			pstmt.setInt(++index, len);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				index=0;
+				int no = rs.getInt(++index);
+				String name = rs.getString(++index);
+				String loc = rs.getString(++index);
+				list.add(new DeptDto(no,name,loc));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+				try {
+					if(rs!=null) rs.close();
+					if(pstmt!=null) pstmt.close();
+					if(con!=null) con.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		
+		return list;
+	}
 	
 	public int getTotalRows() {
 		int rows = 0;
@@ -82,6 +133,44 @@ public class DeptDao {
 			rs = pstmt.executeQuery();
 			int index = 0;
 			if(rs.next()) {
+				rows = rs.getInt(++index);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(con!=null) con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return rows;
+	}
+	public int getTotalRows(String keyWord) {
+		int rows = 0;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ConnLocator.getConnection();
+			StringBuffer sql = new StringBuffer();
+			sql.append("SELECT COUNT(deptno) ");
+			sql.append("FROM dept ");
+			sql.append("WHERE dname LIKE ? ");
+			
+			pstmt = con.prepareStatement(sql.toString());
+			int index = 0;
+			pstmt.setString(++index, "%"+keyWord+"%");
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				index = 0;
 				rows = rs.getInt(++index);
 			}
 		} catch (SQLException e) {

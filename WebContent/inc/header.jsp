@@ -1,3 +1,4 @@
+<%@page import="kr.co.acorn.dao.DeptDao"%>
 <%@page import="kr.co.acorn.dto.MemberDto"%>
 <%@ page pageEncoding="utf-8"%>
 
@@ -62,15 +63,12 @@
       	<li class='nav-item'><a class='nav-link' href='/member/logout.jsp'>로그아웃</a></li>
       <%} %>
       </ul>
-      
-      <form class="form-inline my-2 my-lg-0" method='GET' action='../dept/list.jsp'>
-			<input class="form-control mr-sm-2" type="search" id="keyword" placeholder="부서 검색" aria-label="Search">
+     
+      <form class="form-inline my-2 my-lg-0" name="searchForm" method="post">
+			<input class="form-control mr-sm-2" type="search" id="keyWord" name="keyWord" placeholder="부서 검색 "  aria-label="Search">
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="btnSearch">Search</button>
 	  </form>
       
     </div>
   </nav>
   <!-- navbar end -->
-  
-<script>
-</script>

@@ -1,3 +1,5 @@
+<%@page import="kr.co.acorn.dto.DeptDto"%>
+<%@page import="kr.co.acorn.dao.DeptDao"%>
 <%@ page pageEncoding="utf-8"%>
 
  <!-- footer start -->
@@ -22,3 +24,16 @@
 </body>
 
 </html>
+
+<script>
+$(function(){
+	$("#btnSearch").click(function(event){
+		console.log('btnSearch');
+		event.preventDefault();
+		
+		searchForm.action="../dept/search.jsp";
+		searchForm.submit();
+		
+	});
+});
+</script>

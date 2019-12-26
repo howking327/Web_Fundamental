@@ -15,6 +15,7 @@
 	int pageLength = 5;
 	int pageNum = 0;
 	String name = null;
+	
 	String tempPage = request.getParameter("page");
 	if(tempPage == null || tempPage.length()== 0){
 		cPage = 1;
@@ -167,3 +168,4 @@
 <!-- main end -->
 
 <%@ include file="../inc/footer.jsp" %>
+
